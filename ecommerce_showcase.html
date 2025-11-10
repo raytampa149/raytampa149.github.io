@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Product Listing UI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
+    <style>
+        :root {
+            --primary-color: #f75d59; /* Modern Red/Salmon */
+            --primary-dark: #cc4d4a;
+            --secondary-color: #4a5568; /* Dark Gray */
+            --bg-light: #ffffff;
+            --bg-gray: #f7f9fb;
+            --text-dark: #1a202c;
+            --max-width: 1300px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-gray);
+        }
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header / Navigation */
+        .top-bar {
+            background-color: var(--bg-light);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-content .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .back-link {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Product Header */
+        .listing-header {
+            padding: 40px 0;
+            text-align: center;
+        }
+        .listing-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .listing-header p {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Layout Grid */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            padding-bottom: 80px;
+        }
+
+        /* Sidebar Filters */
+        .sidebar {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        .sidebar h4 {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .filter-group {
+            margin-bottom: 25px;
+        }
+        .filter-group label {
+            display: block;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .filter-group input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: var(--primary-color);
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: var(--bg-light);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            height: 250px;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+        .product-info h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+        .product-info p {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 15px;
+        }
+        .add-to-cart {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: var(--secondary-color);
+            color: var(--bg-light);
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .add-to-cart:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Rating Stars */
+        .rating {
+            color: #ffc107;
+            font-size: 0.9rem;
+        }
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .sidebar {
+                position: static;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+        @media (max-width: 576px) {
+            .listing-header h1 { font-size: 2rem; }
+            .product-card { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container nav-content">
+            <a href="index.html#projects" class="back-link">
+                <i class="fas fa-chevron-left"></i> Back to Portfolio
+            </a>
+            <div class="logo">SHOP</div>
+            <div><i class="fas fa-shopping-cart" style="font-size: 1.3rem;"></i></div>
+        </div>
+    </div>
+
+    <header class="listing-header">
+        <div class="container">
+            <h1>Trending Tech Accessories</h1>
+            <p>Explore the latest in gadgets, productivity tools, and modern aesthetics.</p>
+        </div>
+    </header>
+
+    <div class="container main-layout">
+        
+        <aside class="sidebar">
+            <div class="filter-group">
+                <h4>Category</h4>
+                <label><input type="checkbox" checked> Headphones (12)</label>
+                <label><input type="checkbox"> Smart Watches (5)</label>
+                <label><input type="checkbox"> Keyboards (8)</label>
+                <label><input type="checkbox"> Chargers & Cables (15)</label>
+            </div>
+            
+            <div class="filter-group">
+                <h4>Price Range</h4>
+                <label><input type="checkbox"> Under $50</label>
+                <label><input type="checkbox" checked> $50 - $150 (8)</label>
+                <label><input type="checkbox"> $150+</label>
+            </div>
+            
+            <div class="filter-group">
+                <h4>Brand</h4>
+                <label><input type="checkbox"> ByteTech</label>
+                <label><input type="checkbox" checked> ElectroSense (3)</label>
+                <label><input type="checkbox"> NexusGear</label>
+                <label><input type="checkbox"> AlphaWave</label>
+            </div>
+        </aside>
+
+        <main class="product-listing">
+            <div class="product-grid">
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/400x400/007bff/FFFFFF?text=Product+1" alt="Noise Cancelling Headphones">
+                    </div>
+                    <div class="product-info">
+                        <h3>Noise Cancelling Headphones</h3>
+                        <p>Comfortable over-ear design with 30-hour battery life.</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> (1,200)
+                        </div>
+                        <div class="price">$129.99</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/400x400/28a745/FFFFFF?text=Product+2" alt="Ergonomic Wireless Keyboard">
+                    </div>
+                    <div class="product-info">
+                        <h3>Ergonomic Wireless Keyboard</h3>
+                        <p>Silent tactile keys for maximum productivity and comfort.</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i> (850)
+                        </div>
+                        <div class="price">$89.00</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/400x400/ffc107/FFFFFF?text=Product+3" alt="Smart Fitness Watch">
+                    </div>
+                    <div class="product-info">
+                        <h3>Smart Fitness Watch Pro</h3>
+                        <p>Advanced heart rate monitoring and 10-day battery life.</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> (2,500)
+                        </div>
+                        <div class="price">$149.99</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/400x400/dc3545/FFFFFF?text=Product+4" alt="Ultra-Fast Charging Cable">
+                    </div>
+                    <div class="product-info">
+                        <h3>Ultra-Fast Charging Cable (USB-C)</h3>
+                        <p>Braided nylon cable supporting 100W Power Delivery.</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> (4,100)
+                        </div>
+                        <div class="price">$35.00</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+    </div>
+</body>
+</html>

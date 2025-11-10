@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Professional Solution - Landing Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> 
+    <style>
+        /* General Reset and Base Styles */
+        :root {
+            --primary-color: #007bff; /* Blue */
+            --secondary-color: #6c757d; /* Gray */
+            --whatsapp-green: #25D366; /* WhatsApp Green */
+            --button-dark: #212529; /* Dark button color */
+            --text-dark: #343a40;
+            --text-light: #f8f9fa;
+            --bg-light: #ffffff;
+            --bg-dark: #e9ecef;
+            --max-width: 1200px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* --- Keyframe Animations --- */
+        @keyframes fadeInSlideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header and Navigation */
+        .header {
+            background: var(--bg-light);
+            border-bottom: 1px solid #dee2e6;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        .header.scrolled {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0; 
+            animation: fadeInSlideDown 0.6s ease-out;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-center {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 5px 0;
+            font-weight: 500;
+            transition: color 0.3s, border-bottom 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .whatsapp-cta {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            background-color: var(--whatsapp-green);
+            color: var(--text-light);
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: background-color 0.3s, transform 0.3s;
+            white-space: nowrap;
+        }
+
+        .whatsapp-cta:hover {
+            background-color: #1eaf53;
+            transform: translateY(-1px);
+        }
+
+        .whatsapp-cta i {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+        
+        /* Hero Section (Same as before) */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0056b3 100%);
+            color: var(--text-light);
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            animation: fadeInSlideUp 1s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            animation: fadeInSlideUp 1s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+
+        /* Generic CTA Button (used in Hero and Features) */
+        .cta-button {
+            display: inline-block;
+            background: var(--text-light);
+            color: var(--primary-color);
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: background 0.3s, transform 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hero .cta-button {
+            animation: fadeIn 1s ease-out 0.6s forwards;
+            opacity: 0;
+        }
+
+        .cta-button:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        /* Features Section (Same as before) */
+        .features {
+            padding: 80px 0;
+            text-align: center;
+            background-color: var(--bg-dark);
+        }
+
+        .features h2 {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--primary-color);
+            animation: fadeInSlideUp 0.8s ease-out 0.1s forwards;
+            opacity: 0;
+        }
+
+        .feature-grid {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .feature-item {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: left;
+            opacity: 0;
+            transition: height 0.5s ease-in-out;
+        }
+
+        .feature-item:nth-child(1) { animation: fadeInSlideUp 0.8s ease-out 0.4s forwards; }
+        .feature-item:nth-child(2) { animation: fadeInSlideUp 0.8s ease-out 0.6s forwards; }
+        .feature-item:nth-child(3) { animation: fadeInSlideUp 0.8s ease-out 0.8s forwards; }
+
+        .icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .next-page {
+            display: none;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .feature-item.active .initial-content {
+            display: none;
+        }
+
+        .feature-item.active .next-page {
+            display: block;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            background-color: var(--bg-dark);
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: var(--primary-color);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: left;
+            padding: 40px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Input and Textarea */
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); 
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* Submit Button */
+        .submit-button {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--button-dark); 
+            color: var(--text-light);
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-transform: uppercase;
+            border: none; /* Ensure button style overrides default form submit button */
+            cursor: pointer;
+        }
+        
+        .submit-button:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .submit-button i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: var(--text-light);
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap; 
+                padding-bottom: 10px;
+            }
+            .logo { flex-basis: 50%; }
+            .whatsapp-cta {
+                flex-basis: 40%;
+                justify-content: flex-end;
+                margin-left: auto;
+                padding: 6px 10px;
+            }
+            .nav-center {
+                order: 3;
+                flex-basis: 100%;
+                justify-content: space-around;
+                margin-top: 10px;
+                border-top: 1px solid #eee;
+                padding-top: 10px;
+            }
+            .nav-links a { margin: 0 5px; font-size: 0.9rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .feature-grid { flex-direction: column; align-items: center; }
+            .contact-form { margin: 0 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#hero" class="logo">PROSOLUTION</a>
+                
+                <div class="nav-center">
+                    <div class="nav-links">
+                        <a href="#features">Solutions</a>
+                        <a href="#contact">Contact Form</a>
+                    </div>
+                </div>
+                
+                <a href="https://wa.me/254791418154?text=Hello%20ProSolution.%20I%20saw%20your%20landing%20page%20and%20would%20like%20to%20inquire%20about%20[JOB%20HE%20WANT].%20My%20name%20is%20[NAME]." 
+                   class="whatsapp-cta" 
+                   target="_blank">
+                    <i class="fab fa-whatsapp"></i> 
+                    WhatsApp Us
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero" class="hero">
+        <div class="container">
+            <h1>Future-Proof Your Operations. Achieve Unprecedented Efficiency.</h1>
+            <p>We deliver bespoke technological frameworks designed to maximize ROI and provide a decisive competitive advantage.</p>
+            <a href="#contact" class="cta-button">Schedule a Private Consultation</a>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Our Core Competencies</h2>
+            <div class="feature-grid">
+                
+                <div class="feature-item" id="feature-1">
+                    <div class="feature-content initial-content">
+                        <span class="icon">🚀</span>
+                        <h3>Blazing Fast Performance</h3>
+                        <p>We guarantee a superior user experience with an **optimized architecture** that delivers sub-second load times. **Efficiency starts here.**</p>
+                        <button class="cta-button" onclick="toggleFeature('feature-1')">Learn More</button>
+                    </div>
+
+                    <div class="next-page">
+                        <h4>Proprietary Speed Metrics</h4>
+                        <p>Our platform utilizes **advanced caching and CDN integration** to ensure global accessibility and reliability. We minimize latency to maximize productivity across all your regional centers, driving measurable increases in transaction throughput.</p>
+                        <button class="cta-button" style="background: var(--secondary-color); color: var(--text-light); margin-top: 15px;" onclick="toggleFeature('feature-1')">Back to Summary</button>
+                    </div>
+                </div>
+
+                <div class="feature-item" id="feature-2">
+                    <div class="feature-content initial-content">
+                        <span class="icon">🔒</span>
+                        <h3>Bank-Grade Security</h3>
+                        <p>Protecting your assets is our priority. We implement **zero-trust protocols** and rigorous compliance checks to mitigate risk and ensure data integrity. **Trust is non-negotiable.**</p>
+                        <button class="cta-button" onclick="toggleFeature('feature-2')">Learn More</button>
+                    </div>
+                    
+                    <div class="next-page">
+                        <h4>Compliance and Risk Mitigation</h4>
+                        <p>We maintain strict adherence to international standards (e.g., GDPR, SOC 2). Our security framework includes **256-bit AES encryption**, multi-factor authentication, and continuous vulnerability scanning, providing an impermeable shield for sensitive business data.</p>
+                        <button class="cta-button" style="background: var(--secondary-color); color: var(--text-light); margin-top: 15px;" onclick="toggleFeature('feature-2')">Back to Summary</button>
+                    </div>
+                </div>
+
+                <div class="feature-item" id="feature-3">
+                    <div class="feature-content initial-content">
+                        <span class="icon">📈</span>
+                        <h3>Scalable Growth</h3>
+                        <p>Our infrastructure is designed for limitless expansion. Easily accommodate rapid growth and unexpected peak demand without system degradation. **Scale effortlessly.**</p>
+                        <button class="cta-button" onclick="toggleFeature('feature-3')">Learn More</button>
+                    </div>
+
+                    <div class="next-page">
+                        <h4>Elastic Infrastructure Design</h4>
+                        <p>Leveraging cutting-edge **cloud-native solutions**, our platform automatically allocates resources based on real-time load, ensuring 99.99% uptime. This elasticity minimizes operational costs while supporting complex, high-volume transactions.</p>
+                        <button class="cta-button" style="background: var(--secondary-color); color: var(--text-light); margin-top: 15px;" onclick="toggleFeature('feature-3')">Back to Summary</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Partner with Us.</h2>
+            
+            <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+                <p style="margin-bottom: 30px;">Discuss your specific business challenges with one of our senior consultants today.</p>
+                
+                <input type="hidden" name="access_key" value="7b53cc77-ff3c-4ab1-a7fe-66a7974a12d8">
+                
+                <div class="form-group">
+                    <label for="name">Your Name:</label>
+                    <input type="text" id="name" name="name" placeholder="John Doe, C.E.O." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email-form">Your Professional Email:</label>
+                    <input type="email" id="email-form" name="email" placeholder="C.E.O@globalcorp.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message-form">Your Key Requirement:</label>
+                    <textarea id="message-form" name="message" placeholder="Briefly describe the business need you are looking to address..." required></textarea>
+                </div>
+
+                <button type="submit" class="cta-button submit-button">
+                    <i class="fas fa-paper-plane"></i>
+                    Initiate Discussion
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2025 ProSolution. All rights reserved. | <a href="#contact" style="color: var(--primary-color);">Contact Form</a></p>
+    </footer>
+
+    <script>
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // "Next Page" (Tab/Content Toggle) Functionality
+        function toggleFeature(featureId) {
+            const featureItem = document.getElementById(featureId);
+            featureItem.classList.toggle('active');
+            
+            if (featureItem.classList.contains('active')) {
+                featureItem.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }
+        }
+
+        // Header Shadow on Scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 0) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

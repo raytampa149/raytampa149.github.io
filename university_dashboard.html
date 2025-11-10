@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* General Reset and Base Styles */
+        :root {
+            /* Core Palette */
+            --primary-color: #007bff; /* Deep Blue */
+            --primary-dark: #0056b3;
+            --secondary-color: #00bcd4; /* Cyan/Aqua */
+            --accent-color: #ffc107; /* Yellow/Gold */
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            
+            /* Backgrounds and Text */
+            --text-dark: #212529;
+            --text-light: #ffffff;
+            --bg-light: #ffffff;
+            --bg-gray: #f8f9fa; /* Very light gray */
+            --border-color: #e9ecef; /* Light, subtle border */
+            
+            /* Shadows and Depth */
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lift: 0 10px 30px rgba(0, 0, 0, 0.15);
+            
+            --sidebar-width: 280px; /* Slightly wider for modern feel */
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-gray);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: margin-left 0.3s ease-in-out; 
+            -webkit-font-smoothing: antialiased; /* Smoother font rendering */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-dark);
+            font-weight: 700; /* Bolder headings */
+        }
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+        /* --- Layout --- */
+        .dashboard-container {
+            display: flex;
+            width: 100%;
+        }
+        
+        /* Overlay for Mobile Sidebar */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 90; 
+            display: none; 
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body.sidebar-open .overlay {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Sidebar - Enhanced */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--bg-light) 0%, #f0f4f7 100%);
+            box-shadow: var(--shadow-lift);
+            padding: 20px 0; 
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease-in-out;
+            position: sticky; 
+            top: 0;
+            height: 100vh;
+            overflow-y: auto; 
+            overflow-x: hidden;
+            z-index: 100;
+        }
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .sidebar-header .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            letter-spacing: 1px;
+        }
+        .user-profile {
+            text-align: center;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+        .user-profile img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--secondary-color); 
+            box-shadow: var(--shadow-subtle);
+            margin-bottom: 10px;
+        }
+        .user-profile h4 {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .user-profile span {
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0 15px;
+        }
+        /* Enhanced Navigation Links */
+        .sidebar-nav ul li {
+            margin-bottom: 8px;
+        }
+        .sidebar-nav ul li a {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: var(--text-dark);
+            border-radius: 10px; 
+            transition: all 0.3s ease;
+            font-weight: 500;
+            background-color: transparent;
+        }
+        .sidebar-nav ul li a i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+        .sidebar-nav ul li a:hover {
+            background: linear-gradient(90deg, var(--primary-color) 0%, #0093E9 100%);
+            color: var(--text-light);
+            transform: scale(1.02); 
+        }
+        
+        .sidebar-nav ul li a:hover i {
+             color: var(--text-light); 
+        }
+        .sidebar-nav ul li.active a {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            box-shadow: var(--shadow-subtle);
+        }
+        
+        .sidebar-nav ul li.active a i {
+            color: var(--text-light);
+        }
+            
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            width: calc(100% - var(--sidebar-width));
+        }
+        /* Header (Top Nav) - Enhanced */
+        .header {
+            background-color: var(--bg-light);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 99;
+            border-radius: 10px; 
+            margin-bottom: 30px;
+        }
+
+        /* Hide menu toggle on large screens */
+        .header-left .menu-toggle {
+            display: none; 
+        }
+
+        .header-left h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: var(--primary-dark);
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px; 
+        }
+        .header-right .icon-button {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            transition: transform 0.2s ease, color 0.2s ease;
+            background: none;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+        .header-right .icon-button:hover {
+            color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        .header-right .icon-button .badge {
+            background-color: var(--danger-color); 
+            color: var(--text-light);
+            font-size: 0.7rem;
+            padding: 2px 5px;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        
+        /* New Logout Button Style */
+        .logout-button {
+            background-color: var(--danger-color);
+            color: var(--text-light);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logout-button i {
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+        
+        .logout-button:hover {
+            background-color: #c82333; 
+            transform: translateY(-2px);
+            color: var(--text-light); 
+        }
+        /* Dashboard Grid - Enhanced */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .dashboard-card {
+            background-color: var(--bg-light);
+            padding: 30px;
+            border-radius: 15px; 
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--primary-color); 
+        }
+        .dashboard-card:hover {
+            transform: translateY(-8px); 
+            box-shadow: var(--shadow-lift);
+        }
+        .dashboard-card h3 {
+            margin-bottom: 25px;
+            color: var(--primary-dark);
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        /* Welcome Card - Enhanced */
+        .welcome-card {
+            grid-column: 1 / -1; 
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-light);
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-lift);
+        }
+        .welcome-card h2 {
+            color: var(--text-light);
+            font-size: 2.2rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .welcome-card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+        
+        .welcome-card img {
+             width: 70px;
+             height: 70px;
+             border-radius: 50%;
+             margin-right: 20px;
+             border: 3px solid var(--text-light);
+        }
+        /* Quick Stats - Enhanced */
+        .quick-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+        }
+        .stat-item {
+            background-color: var(--bg-gray);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease;
+        }
+        .stat-item h4 {
+            font-size: 2.2rem;
+            color: var(--accent-color);
+        }
+        
+        /* Lists (Assignments, Announcements) - Enhanced */
+        .assignments-list, .announcements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .list-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px dashed var(--border-color);
+            padding: 10px 0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .list-item:hover {
+            background-color: #f0f4f7;
+            border-radius: 5px;
+            padding-left: 5px;
+        }
+        .list-item .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px; 
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-right: 15px;
+        }
+        
+        .list-item .content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .list-item .content strong {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .list-item .content span {
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        /* Calendar - Enhanced */
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-nav h4 {
+            font-size: 1.2rem;
+        }
+        
+        .calendar-nav button {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        
+        .calendar-nav button:hover {
+            background-color: var(--bg-gray);
+            transform: scale(1.1);
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            gap: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .calendar-grid .day-name {
+            font-weight: 600;
+            color: var(--primary-dark);
+            padding: 5px 0;
+        }
+        .calendar-grid .day {
+            padding: 8px 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .calendar-grid .day:not(.empty):hover {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+        }
+        .calendar-grid .day.empty {
+            pointer-events: none;
+        }
+        
+        .calendar-grid .day.current-day {
+            background-color: var(--danger-color); 
+            color: var(--text-light);
+            font-weight: 700;
+            transform: scale(1.05);
+            box-shadow: var(--shadow-subtle);
+        }
+        
+        .calendar-grid .day.has-event {
+            font-weight: 600;
+            color: var(--primary-dark);
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+        
+        .calendar-grid .day.has-event::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: var(--success-color); 
+        }
+        
+        /* Quick Links - Enhanced */
+        .quick-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .quick-link-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+            border-radius: 10px;
+            text-align: center;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            color: var(--primary-dark);
+            box-shadow: var(--shadow-subtle);
+            transition: all 0.3s ease;
+        }
+        .quick-link-item:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+        }
+        .quick-link-item i {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+        }
+        
+        .quick-link-item:hover i {
+            color: var(--text-light);
+        }
+        
+        .quick-link-item span {
+            font-weight: 500;
+        }
+        /* Media Queries remain crucial for interactivity */
+        @media (max-width: 768px) {
+             .sidebar {
+                width: 250px;
+                transform: translateX(-250px);
+                position: fixed; 
+            }
+            body.sidebar-open {
+                 overflow: hidden; 
+            }
+
+            body.sidebar-open .sidebar {
+                transform: translateX(0);
+            }
+            .header-left .menu-toggle {
+                display: block; 
+                margin-right: 15px; 
+            }
+             .main-content {
+                width: 100%; 
+                padding: 20px;
+            }
+            .logout-button span {
+                display: none; 
+            }
+            .logout-button {
+                padding: 8px 10px;
+            }
+            .logout-button i {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" onclick="toggleSidebar()"></div>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="logo">EDU DASH</a>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/90/00BCD4/FFFFFF?text=JD" alt="User Avatar">
+                <h4>Jane Doe</h4>
+                <span>Computer Science, S123456</span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-book-open"></i> Courses & Lectures</a></li>
+                    <li><a href="#"><i class="fas fa-calendar-check"></i> Academic Schedule</a></li>
+                    <li><a href="#"><i class="fas fa-chart-bar"></i> Grades & Performance</a></li>
+                    <li><a href="#"><i class="fas fa-bullhorn"></i> Official Notices</a></li>
+                    <li><a href="#"><i class="fas fa-inbox"></i> Internal Messaging</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Account Settings</a></li>
+                    <li><a href="#" class="logout-sidebar"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li><a href="#"><i class="fas fa-user-graduate"></i> Career Services</a></li>
+                    <li><a href="#"><i class="fas fa-credit-card"></i> Student Finance</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> Support Center</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <div class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <button class="icon-button menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                    <h1>Student Overview</h1>
+                </div>
+                <div class="header-right">
+                    <button class="icon-button"><i class="fas fa-search"></i></button>
+                    <button class="icon-button"><i class="fas fa-bell"></i><span class="badge">3</span></button>
+                    <button class="icon-button"><i class="fas fa-envelope"></i><span class="badge">1</span></button>
+                    
+                    <a href="#" class="logout-button">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </header>
+            <div class="dashboard-grid">
+                <div class="welcome-card">
+                    <img src="https://via.placeholder.com/70/FFFFFF/007BFF?text=JD" alt="User Avatar">
+                    <div>
+                        <h2>Welcome Back, Raymond Bykyibei!</h2>
+                        <p>Stay organized and on top of your academic journey this semester.</p>
+                    </div>
+                </div>
+                <div class="dashboard-card" style="border-top-color: var(--secondary-color);">
+                    <h3>Academic Snapshot</h3>
+                    <div class="quick-stats-grid">
+                        <div class="stat-item">
+                            <h4>5</h4>
+                            <p>Active Courses</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>2</h4>
+                            <p>Assignments Due</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>85%</h4>
+                            <p>Avg. Grade</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>92%</h4>
+                            <p>Attendance</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-card" style="border-top-color: var(--accent-color);">
+                    <h3>Upcoming Assignments</h3>
+                    <div class="assignments-list">
+                        <div class="list-item">
+                            <div class="icon" style="background-color: var(--accent-color);"><i class="fas fa-clipboard-list"></i></div>
+                            <div class="content">
+                                <strong>Research Paper: AI Ethics</strong>
+                                <span>Due: April 25, 2026 (COMP101)</span>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="icon" style="background-color: var(--danger-color);"><i class="fas fa-flask"></i></div>
+                            <div class="content">
+                                <strong>Lab Report: Photosynthesis</strong>
+                                <span>Due: April 28, 2026 (BIO202)</span>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="icon" style="background-color: var(--primary-color);"><i class="fas fa-pen-nib"></i></div>
+                            <div class="content">
+                                <strong>Essay: Modern Literature</strong>
+                                <span>Due: May 5, 2026 (ENG303)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-card" style="border-top-color: var(--primary-color);">
+                    <h3>Recent Announcements</h3>
+                    <div class="announcements-list">
+                        <div class="list-item">
+                            <div class="icon" style="background-color: var(--secondary-color);"><i class="fas fa-bullhorn"></i></div>
+                            <div class="content">
+                                <strong>Library Hours Extended</strong>
+                                <span>April 20, 2026 - Until Finals Week</span>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="icon" style="background-color: #6f42c1;"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="content">
+                                <strong>Spring Semester Registration Open</strong>
+                                <span>April 18, 2026 - Register Now!</span>
+                            </div>
+                        </div>
+                        <div class="list-item">
+                            <div class="icon" style="background-color: var(--danger-color);"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="content">
+                                <strong>Campus Network Maintenance</strong>
+                                <span>April 23, 2026 - 10 PM to 2 AM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-card" style="border-top-color: #6f42c1;">
+                    <h3>Academic Calendar</h3>
+                    <div class="calendar-nav">
+                        <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                        <h4 id="currentMonthYear">April 2026</h4>
+                        <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <div class="day-name">Sun</div>
+                        <div class="day-name">Mon</div>
+                        <div class="day-name">Tue</div>
+                        <div class="day-name">Wed</div>
+                        <div class="day-name">Thu</div>
+                        <div class="day-name">Fri</div>
+                        <div class="day-name">Sat</div>
+                    </div>
+                </div>
+                <div class="dashboard-card" style="border-top-color: var(--success-color);">
+                    <h3>Quick Access</h3>
+                    <div class="quick-links-grid">
+                        <a href="#" class="quick-link-item">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <span>Faculty</span>
+                        </a>
+                        <a href="#" class="quick-link-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Map</span>
+                        </a>
+                        <a href="#" class="quick-link-item">
+                            <i class="fas fa-building"></i>
+                            <span>Admin</span>
+                        </a>
+                        <a href="#" class="quick-link-item">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <span>Aid</span>
+                        </a>
+                        <a href="#" class="quick-link-item">
+                            <i class="fas fa-globe"></i>
+                            <span>Alumni</span>
+                        </a>
+                        <a href="#" class="quick-link-item">
+                            <i class="fas fa-question-circle"></i>
+                            <span>Help</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Sidebar Toggle for Mobile
+        function toggleSidebar() {
+            const body = document.body;
+            body.classList.toggle('sidebar-open'); 
+        }
+
+        // Calendar Logic
+        const calendarGrid = document.getElementById('calendarGrid');
+        const currentMonthYear = document.getElementById('currentMonthYear');
+        const prevMonthBtn = document.getElementById('prevMonth');
+        const nextMonthBtn = document.getElementById('nextMonth');
+
+        let currentDate = new Date();
+        let currentYear = currentDate.getFullYear();
+        let currentMonth = currentDate.getMonth();
+
+        // Adjust the date to be in 2026 for demonstration
+        currentYear = 2026; 
+
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        // Dummy events for the calendar (M-D-YYYY format)
+        const events = {
+            '4-25-2026': 'Assignment Due (AI Ethics)', // April 25
+            '4-28-2026': 'Lab Report Due (Photosynthesis)', // April 28
+            '5-1-2026': 'Mid-Term Exams Start', // May 1
+            '5-5-2026': 'Essay Due (Modern Literature)', // May 5
+            '5-15-2026': 'Final Exams Begin' // May 15
+        };
+
+        function renderCalendar() {
+            // 1. Clear previous days and re-add day names
+            calendarGrid.innerHTML = `
+                <div class="day-name">Sun</div>
+                <div class="day-name">Mon</div>
+                <div class="day-name">Tue</div>
+                <div class="day-name">Wed</div>
+                <div class="day-name">Thu</div>
+                <div class="day-name">Fri</div>
+                <div class="day-name">Sat</div>
+            `; 
+
+            currentMonthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(); // Day of the week (0=Sun, 6=Sat)
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            // 2. Add empty days for the start of the month
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('day', 'empty');
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            // 3. Add actual days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day', 'current-month');
+                dayElement.textContent = day;
+
+                const fullDateKey = `${currentMonth + 1}-${day}-${currentYear}`;
+
+                // Set a specific date as "today" for demonstration purposes (e.g., April 9, 2026)
+                if (currentYear === 2026 && currentMonth === 3 && day === 9) { 
+                    dayElement.classList.add('current-day');
+                }
+
+                
+                if (events[fullDateKey]) {
+                    dayElement.classList.add('has-event');
+                    dayElement.title = events[fullDateKey]; 
+                }
+
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        prevMonthBtn.addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        });
+
+        // Initial render
+        renderCalendar();
+    </script>
+</body>
+</html>
